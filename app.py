@@ -58,7 +58,7 @@ class StdOutListener(StreamListener):
             pass
         if date_tweet and text:
             Tweet(content=text,date=date_tweet).save()
-            print 'tweet stored'
+            # print 'tweet stored'
         return True
 
     def on_error(self, status):
