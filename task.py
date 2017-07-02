@@ -34,7 +34,7 @@ class StdOutListener(StreamListener):
             # print type(decoded['created_at'])
             if decoded['text']:
                 text = decoded['text']
-            print decoded['coordinates']
+            # print decoded['coordinates']
             # print date_tweet,text
         except:
             pass
