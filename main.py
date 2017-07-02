@@ -52,7 +52,7 @@ class StdOutListener(StreamListener):
             if decoded['text']:
                 text = decoded['text']
             # print decoded['coordinates']
-            print date_tweet,text
+            # print date_tweet,text
         except:
             pass
         # if date_tweet and text:
