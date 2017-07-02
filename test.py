@@ -34,12 +34,12 @@ class StdOutListener(StreamListener):
             if decoded['text']:
                 text = decoded['text']
             # print decoded['coordinates']
-            print date_tweet,text
+            # print date_tweet,text
         except:
             pass
         if date_tweet and text:
             Tweet(content=text,date=date_tweet).save()
-            print 'tweet stored'
+            # print 'tweet stored'
         return True
 
     def on_error(self, status):
@@ -53,5 +53,5 @@ if __name__ == '__main__':
     auth.set_access_token(access_token, access_token_secret)
 
     stream = Stream(auth, l)
-    print 'stream connected'
+    # print 'stream connected'
     stream.filter(track=['analytics'])
