@@ -5,9 +5,11 @@
     <title>Twitter Analysis</title>
  
  
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    
  
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
  
     <script src="https://code.highcharts.com/highcharts.js"></script>
 </head>
@@ -24,102 +26,53 @@
                     </li>
                 </ul>
             </nav>
-            <h3 class="text-muted">Twitter Data App</h3>
+            <h3 class="text-muted">Twitter Data Analysis for word 'analytics'</h3>
         </div>
- 
- 
-        <div class="row marketing">
-            <div class="col-lg-12">
-            {% if results_monthly %}
-            <table>
-                <tbody>
-                {% for data in results_monthly%}
-                    <tr>
-                        <td>{{ loop.index }}</td>
-                        <td>{{data}}</td>
-                    </tr>
-                {% endfor %}
+ <div>
 
-                </tbody>
-            </table>
-            {#{results|count}#}
-            {% else %}
-                <p>No result found</p>
-            {% endif %}
-             
+        <div class="col-xs-12 col-sm-offset-3 col-sm-6 no--padding content-padding payment-method">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#bank" data-toggle="tab" class="dark-text">Bank transfer</a>
+                </li>
+                <li>
+                    <a href="#card" data-toggle="tab" class="dark-text">Debit card</a>
+                </li>
+            </ul>
+            <br>
+            <div class="tab-content col-xs-12 margin">
+                <div id="bank" class="tab-pane fade in active">
+
+                    <div id="generate-reference" class="btn btn-invest">
+                        generate wire reference
+                    </div>
+                    <div id="reference-results-container"></div>
+                    <div id="row-indicator" style="display: none;background-image: url('/img/new-loader.gif');width: 50px;height: 50px;"></div>
+                </div>
+                <div id="card" class="tab-pane fade in">
+                </div>
             </div>
         </div>
 
-        <div class="row marketing">
-            <div class="col-lg-12">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" >
+    <li class="active">
+        <a href="#chart-container-hour" data-toggle="tab">Tweets/min</a>     </li>
+    <li role="presentation">
+        <a href="#chart-container-second" data-toggle="tab">Tweets/sec</a>
+    </li>
+  </ul>
 
-            {% if results_daily %}
-            <table>
-                <tbody>
-                {% for data in results_daily %}
-                    <tr>
-                        <td>{{ loop.index }}</td>
-                        <td>{{data}}</td>
-                    </tr>
-                {% endfor %}
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane active" id="chart-container-hour" style="height: 400px">
+    </div>
+    <div class="tab-pane" id="chart-container-second" style="height: 400px">
+  </div>
 
-                </tbody>
-            </table>
-            {#{results|count}#}
-            {% else %}
-                <p>No result found</p>
-            {% endif %}
-             
-            </div>
-        </div>
+</div>
 
-        <div class="row marketing">
-            <div class="col-lg-12">
-            {% if results_weekly %}
-            <table>
-                <tbody>
-                {% for data in results_weekly%}
-                    <tr>
-                        <td>{{ loop.index }}</td>
-                        <td>{{data}}</td>
-                    </tr>
-                {% endfor %}
 
-                </tbody>
-            </table>
-            {#{results|count}#}
-            {% else %}
-                <p>No result found</p>
-            {% endif %}
-             
-            </div>
-        </div>
-
-        <div class="row marketing">
-            <div class="col-lg-12">
-
-            {% if results_second %}
-            <table>
-                <tbody>
-                {% for data in results_second %}
-                    <tr>
-                        <td>{{ loop.index }}</td>
-                        <td>{{data}}</td>
-                    </tr>
-                {% endfor %}
-
-                </tbody>
-            </table>
-            {#{results|count}#}
-            {% else %}
-                <p>No result found</p>
-            {% endif %}
-             
-            </div>
-        </div>
- 
-        <div id="chart-container-hour" style="height: 400px"></div>
-        <div id="chart-container-second" style="height: 400px"></div>
         <script>
             Highcharts.chart('chart-container-hour', {
                 title: {
