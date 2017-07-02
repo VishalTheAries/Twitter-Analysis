@@ -1,4 +1,4 @@
-from flask import Flask,render_template
+from flask import Flask,render_template,request
 
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
@@ -15,13 +15,18 @@ app = Flask(__name__)
 def home_page():
     return render_template('index.html')
 
-
+@app.route('/search',methods=['POST'])
+def search():
+    data = request.form.get('search_key','')
+    objects = Tweet.objects.search_text(data).all()
+    print len(objects)
+    return render_template('search_results.html',results=objects)
 
 @app.route('/fetchtwitter')
 def fetchtwitter():
-    # Tweet.objects.delete()
+    Tweet.drop_collection()
     tweepy_fun()
-    return 'fetched'
+    return 'fetching in process'
 
 
 # Go to http://apps.twitter.com and create an app.
@@ -51,8 +56,9 @@ class StdOutListener(StreamListener):
             # print date_tweet,text
         except:
             pass
-        # if date_tweet and text:
-            # Tweet(content=text,date=date_tweet).save()
+        if date_tweet and text:
+            Tweet(content=text,date=date_tweet).save()
+            print 'tweet stored'
         return True
 
     def on_error(self, status):
@@ -65,7 +71,7 @@ def tweepy_fun():
     auth.set_access_token(access_token, access_token_secret)
 
     stream = Stream(auth, l)
-    stream.filter(track=['analytics'],async=True)
+    stream.filter(track=['analytics'])
 
 if __name__ == "__main__":
     app.run() 

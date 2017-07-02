@@ -25,7 +25,7 @@ class StdOutListener(StreamListener):
     """
     def on_data(self, data):
         try:
-            print 'data recieved'
+            # print 'data recieved'
             decoded = json.loads(data)
             date_tweet,text = '',''
             if decoded['created_at']:
@@ -39,7 +39,7 @@ class StdOutListener(StreamListener):
             pass
         if date_tweet and text:
             Tweet(content=text,date=date_tweet).save()
-            # print 'tweet stored'
+            print 'tweet stored'
         return True
 
     def on_error(self, status):

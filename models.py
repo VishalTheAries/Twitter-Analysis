@@ -6,8 +6,8 @@ MONGO_HOST = 'localhost'
 PROJECT_NAME = 'twitterdata'
 
 # print 'before connect'
-connect(host='mongodb://vishal:vishal@ds145892.mlab.com:45892/heroku_00mz69jn')#, host=MONGO_HOST, port=MONGO_PORT)
-# print 'out of connect'
+connect(PROJECT_NAME,host='mongodb://vishal:vishal@ds145892.mlab.com:45892/heroku_00mz69jn')#, host=MONGO_HOST, port=MONGO_PORT)
+print 'out of connect'
 
 class Tweet(Document):
     content = StringField(required=True)
