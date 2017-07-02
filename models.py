@@ -1,4 +1,4 @@
-print 'in model'
+# print 'in model'
 from mongoengine import *
 
 MONGO_HOST = 'localhost'
