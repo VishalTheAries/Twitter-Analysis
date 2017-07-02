@@ -72,4 +72,4 @@ def tweepy_fun():
     stream.filter(track=['analytics'],async=True)
 
 if __name__ == "__main__":
-    app.run(port=10000,debug=True) 
+    app.run() 
