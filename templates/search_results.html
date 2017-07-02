@@ -35,6 +35,8 @@
                     {{tweet.content |safe}}<br/>
                     {{ tweet.date |safe}}<br/><br/>
                 {% endfor %}
+            {% else %}
+                <p>No result found</p>
             {% endif %}
              
             </div>
