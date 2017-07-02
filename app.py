@@ -19,7 +19,7 @@ def home_page():
 def search():
     data = request.form.get('search_key','')
     objects = Tweet.objects.search_text(data).all()
-    print len(objects)
+    # print len(objects)
     return render_template('search_results.html',results=objects)
 
 @app.route('/fetchtwitter')
