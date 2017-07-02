@@ -7,7 +7,7 @@ import json
 from dateutil import parser
 
 from models import *
-print 'model imported'
+# print 'model imported'
 
 # Go to http://apps.twitter.com and create an app.
 # The consumer key and secret will be generated for you after
@@ -27,23 +27,25 @@ class StdOutListener(StreamListener):
         try:
             # print 'data recieved'
             decoded = json.loads(data)
+            # print data
             date_tweet,text = '',''
             if decoded['created_at']:
                 date_tweet = parser.parse(decoded['created_at'])
             # print type(decoded['created_at'])
             if decoded['text']:
                 text = decoded['text']
-            # print decoded['coordinates']
+            print decoded['coordinates']
             # print date_tweet,text
         except:
             pass
         if date_tweet and text:
             Tweet(content=text,date=date_tweet).save()
-            print 'tweet stored'
+            # print 'tweet stored'
         return True
 
     def on_error(self, status):
-        print(status)
+        # print(status)
+        pass
 
 if __name__ == '__main__':
 
