@@ -56,71 +56,60 @@ def analytics_page():
             "dayOfMonth": { "$dayOfMonth": "$date" }
         }}, 
         { "$group": {
-            "_id": "$month", 
-            "sum": { "$dayOfMonth": 1 }
+            "_id": "$dayOfMonth", 
+            "sum": { "$sum": 1 }
         }}
     ]
+    pipeline_seconds = [
+        { "$project": {
+            "nominal": 1, 
+            "second": { "$second": "$date" }
+        }}, 
+        { "$group": {
+            "_id": "$second", 
+            "sum": { "$sum": 1 }
+        }}
+    ]
+
+    pipeline_hour = [
+        { "$project": {
+            "nominal": 1, 
+            "minute": { "$minute": "$date" }
+        }}, 
+        { "$group": {
+            "_id": "$minute", 
+            "sum": { "$sum": 1 }
+        }}
+    ]    
+
     results_monthly,results_weekly,results_daily=[],[],[]
+    results_second ,results_hour= [],[]
     # import pdb;pdb.set_trace()
     try:
         results_monthly = list(Tweet.objects.aggregate(*pipeline_monthly))
         results_weekly = list(Tweet.objects.aggregate(*pipeline_weekly))
         results_daily = list(Tweet.objects.aggregate(*pipeline_daily))
+        results_second = list(Tweet.objects.aggregate(*pipeline_seconds))
+        results_hour = list(Tweet.objects.aggregate(*pipeline_hour))
     except:
         pass
-    return render_template('analytics.html',results_monthly=results_monthly,results_weekly=results_weekly)
+    # import pdb;pdb.set_trace()
+    
+    results_second_list=[0]*60
+    for data in results_second:
+        results_second_list[data['_id']-1]=data['sum']
+
+    results_hour_list=[0]*60
+    for data in results_hour:
+        results_hour_list[data['_id']-1]=data['sum']
+    
+    return render_template('analytics.html',results_monthly=results_monthly,
+                                results_weekly=results_weekly,
+                                results_daily=results_daily,
+                                results_second_list=results_second_list,
+                                results_second=results_second,
+                                results_hour_list=results_hour_list,
+                                results_hour=results_hour)
 
 if __name__ == "__main__":
     app.run() 
-
-
-    # pipeline = [{
-    #         "$project" : {
-    #             "year" : {
-    #                 "$year" : "$date"
-    #             },
-    #             "month" : {
-    #                 "$month" : "$date"
-    #             },
-    #             "week" : {
-    #                 "$week" : "$date"
-    #             },
-    #             "day" : {
-    #                 "$dayOfWeek" : "$date"
-    #             },
-    #             "_id" : 1,
-    #             "weight" : 1
-    #         }
-    #     }, {
-    #         "$group" : {
-    #             "_id" : {
-    #                 "year" : "$year",
-    #                 "month" : "$month",
-    #                 "week" : "$week",
-    #                 "day" : "$day"
-    #             },
-    #             "totalWeightDaily" : {
-    #                 "$sum" : 1
-    #             }
-    #         }
-    #     },
-    #     {
-    #         "$group" : {
-
-    #             "_id" : {
-    #                 "year" : "$_id.year",
-    #                 "month" : "$_id.month",
-    #                 "week" : "$_id.week"
-    #             },
-    #             "totalWeightWeekly" : {
-    #                 "$sum" : "$totalWeightDaily"
-    #             },
-    #             "totalWeightDay" : {
-    #                 "$push" : {
-    #                     "totalWeightDay" : "$totalWeightDaily",
-    #                     "dayOfWeek" : "$_id.day"
-    #                 }
-    #             }
-    #         }
-    #     }
-    # ]

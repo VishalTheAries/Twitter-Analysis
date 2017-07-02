@@ -9,11 +9,11 @@
  
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
  
- 
+    <script src="https://code.highcharts.com/highcharts.js"></script>
 </head>
  
 <body>
- 
+    
     <div class="container">
         <div class="header">
             <nav>
@@ -52,10 +52,11 @@
 
         <div class="row marketing">
             <div class="col-lg-12">
+
             {% if results_daily %}
             <table>
                 <tbody>
-                {% for data in results_daily%}
+                {% for data in results_daily %}
                     <tr>
                         <td>{{ loop.index }}</td>
                         <td>{{data}}</td>
@@ -93,8 +94,76 @@
              
             </div>
         </div>
+
+        <div class="row marketing">
+            <div class="col-lg-12">
+
+            {% if results_second %}
+            <table>
+                <tbody>
+                {% for data in results_second %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{data}}</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+            {#{results|count}#}
+            {% else %}
+                <p>No result found</p>
+            {% endif %}
+             
+            </div>
+        </div>
  
- 
+        <div id="chart-container-hour" style="height: 400px"></div>
+        <div id="chart-container-second" style="height: 400px"></div>
+        <script>
+            Highcharts.chart('chart-container-hour', {
+                title: {
+                    text: 'Daily Analysis over 60 minutes of hour'
+                },
+
+                subtitle: {
+                    text: 'Daily Chart'
+                },
+
+
+                xAxis: {
+                    categories: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24',
+                                    '25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48',
+                                    '49','50','51','52','53','54','55','56','57','58','59','60']
+                },
+
+                series: [{
+                    data: {{results_hour_list}}
+                }]
+            });
+
+            Highcharts.chart('chart-container-second', {
+                title: {
+                    text: 'Daily Analysis over 60 seconds of minute'
+                },
+
+                subtitle: {
+                    text: 'Daily Chart'
+                },
+
+
+                xAxis: {
+                    categories: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24',
+                                    '25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48',
+                                    '49','50','51','52','53','54','55','56','57','58','59','60']
+                },
+
+                series: [{
+                    data: {{results_second_list}}
+                }]
+            });
+        </script>
+
     </div>
 </body>
  
