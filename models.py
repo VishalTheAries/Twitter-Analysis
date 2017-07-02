@@ -2,7 +2,7 @@ print 'in model'
 from mongoengine import *
 
 MONGO_HOST = 'localhost'
-MONGO_PORT = 543264
+# MONGO_PORT = 543264
 PROJECT_NAME = 'twitterdata'
 
 # print 'before connect'

@@ -16,10 +16,6 @@ def home_page():
     return render_template('index.html')
 
 
-@app.route('/')    
-def search_page():
-    return render_template('index.html')
-
 
 @app.route('/fetchtwitter')
 def fetchtwitter():
