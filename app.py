@@ -1,11 +1,7 @@
 from flask import Flask,render_template,request
-
-from tweepy.streaming import StreamListener
-from tweepy import OAuthHandler
-from tweepy import Stream
 import json
-
 from models import *
+from pipeline_queries import *
 
 app = Flask(__name__)
 
@@ -24,65 +20,9 @@ def search():
 
 @app.route('/analytics')    
 def analytics_page():
-    pipeline_monthly = [
-        { "$project": {
-            "nominal": 1, 
-            "month": { "$month": "$date" }
-        }}, 
-        { "$group": {
-            "_id": "$month", 
-            "sum": { "$sum": 1 }
-        }}
-    ]
-    pipeline_weekly = [
-        { 
-            "$project": {
-                "createdAtWeek": { "$week": "$date" },
-                "createdAtMonth": { "$month": "$date" },
-                "rating": 1
-            }
-        },
-        {
-             "$group": {
-                 "_id": "$createdAtWeek",
-                 "sum": { "$sum": 1 },
-                 "month": { "$first": "$createdAtMonth" }
-             }
-        }
-    ]
-    pipeline_daily = [
-        { "$project": {
-            "nominal": 1, 
-            "dayOfMonth": { "$dayOfMonth": "$date" }
-        }}, 
-        { "$group": {
-            "_id": "$dayOfMonth", 
-            "sum": { "$sum": 1 }
-        }}
-    ]
-    pipeline_seconds = [
-        { "$project": {
-            "nominal": 1, 
-            "second": { "$second": "$date" }
-        }}, 
-        { "$group": {
-            "_id": "$second", 
-            "sum": { "$sum": 1 }
-        }}
-    ]
-
-    pipeline_hour = [
-        { "$project": {
-            "nominal": 1, 
-            "minute": { "$minute": "$date" }
-        }}, 
-        { "$group": {
-            "_id": "$minute", 
-            "sum": { "$sum": 1 }
-        }}
-    ]    
-
-    results_monthly,results_weekly,results_daily=[],[],[]
+        
+    pipeline_monthly,pipeline_weekly,pipeline_daily,pipeline_seconds,pipeline_hour = pipeline_queries()
+    results_monthly,resucompliancelts_weekly,results_daily=[],[],[]
     results_second ,results_hour= [],[]
     # import pdb;pdb.set_trace()
     try:
@@ -93,7 +33,6 @@ def analytics_page():
         results_hour = list(Tweet.objects.aggregate(*pipeline_hour))
     except:
         pass
-    # import pdb;pdb.set_trace()
     
     results_second_list=[0]*60
     for data in results_second:
@@ -103,13 +42,15 @@ def analytics_page():
     for data in results_hour:
         results_hour_list[data['_id']-1]=data['sum']
     
-    return render_template('analytics.html',results_monthly=results_monthly,
+    return render_template('analytics.html',
+                                results_monthly=results_monthly,
                                 results_weekly=results_weekly,
                                 results_daily=results_daily,
                                 results_second_list=results_second_list,
                                 results_second=results_second,
                                 results_hour_list=results_hour_list,
                                 results_hour=results_hour)
+
 
 if __name__ == "__main__":
     app.run() 
