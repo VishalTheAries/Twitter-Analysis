@@ -1,13 +1,7 @@
-# print 'in model'
 from mongoengine import *
+from config import *
 
-MONGO_HOST = 'localhost'
-# MONGO_PORT = 543264
-PROJECT_NAME = 'twitterdata'
-
-# print 'before connect'
-connect(PROJECT_NAME,host='mongodb://vishal:vishal@ds145892.mlab.com:45892/heroku_00mz69jn')#, host=MONGO_HOST, port=MONGO_PORT)
-# print 'out of connect'
+connect(PROJECT_NAME,host=MONGO_HOST)
 
 class Tweet(Document):
     content = StringField(required=True)
